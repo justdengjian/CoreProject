@@ -1,0 +1,85 @@
+﻿@model IEnumerable<WebApplication1.Models.Result>
+
+@{
+    ViewData["Title"] = "Index";
+    int PageCount = Convert.ToInt32(ViewBag.PageCount);
+    int PageIndex = Convert.ToInt32(ViewBag.PageIndex);
+    int PageStart = PageIndex - 2 > 0 ? PageIndex - 2 : 1;
+    int PageEnd = PageIndex + 2 > PageCount ? PageCount : PageStart + 4;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Add">新增</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StuName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StuName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item @(PageIndex==1?"disabled":"")">
+            <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-pageindex="@(PageIndex==1?1:PageIndex-1)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (int i = PageStart; i <= PageEnd; i++)
+        {
+            <li class="page-item @(PageIndex==i?"active":"")"><a class="page-link" asp-action="Index" asp-route-pageindex="@i">@i</a></li>
+        }
+        <li class="page-item @(PageIndex==PageCount?"disabled":"")">
+            <a class="page-link" aria-label="Next" asp-action="Index" asp-route-pageindex="@(PageIndex==PageCount?PageCount:PageIndex+1)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
